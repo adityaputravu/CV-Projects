@@ -38,8 +38,8 @@ def gameloop():
     # Mandatory functions
 
     def draw_apple():
-        apple_x = int(random.randrange(0, win_width - apple_width))  # / apple_width) * apple_width
-        apple_y = int(random.randrange(0, win_height - apple_height))  # / apple_height) * apple_height
+        apple_x = int(random.randrange(0, win_width - apple_width)) 
+        apple_y = int(random.randrange(0, win_height - apple_height))
 
         return apple_x, apple_y
 
@@ -240,15 +240,13 @@ def gameloop():
                           ]
                          )
 
-
-
         while gameOver == True:
             clean(gameDisplay, yellow)
             data = open('Highscore.dat', 'r+')
             highscore = data.read()
             data.close()
             display_msg('Game Over!', red, -140, size='big')
-            if real_score > 75:
+            if real_score > 90:
                 display_msg('I hope you\'re happy, CHEATER.', red, -10, size='medium')
                 display_msg('Your \'hacked\' score was: '+ str(real_score), red, 60, size='small')
                 display_msg('The highscore is: '+ str(highscore), red, 90, size='small')
@@ -328,7 +326,7 @@ def gameloop():
                 elif event.key == pygame.K_8:
                     real_score = 1000
 
-    # logicr
+    # logic
         lead_x += lead_x_change
         lead_y += lead_y_change
 
@@ -355,7 +353,6 @@ def gameloop():
         #clean(outlineDisplay, black)
 
         #apple
-        #pygame.draw.rect(gameDisplay, red, [apple_x, apple_y, apple_width, apple_height])
         gameDisplay.blit(appleimg, (apple_x, apple_y))
         #snake
         snakehead = []
@@ -366,26 +363,15 @@ def gameloop():
 
 
         # so users sees after crash
-        # V 1.0
-        #     if lead_x == apple_x and lead_y == apple_y:
-        #         apple_x = int(random.randrange(0, win_width - apple_width) / apple_width) * apple_width
-        #         apple_y = int(random.randrange(0, win_height - apple_height) / apple_height) * apple_height
-        #         snake_score += 2
-        # This code fixes the collision detection
-        #V 2.0
-        # if lead_x >= apple_x and lead_x <= apple_x+apple_width:
-        #     if lead_y >= apple_y and lead_y <= apple_y+apple_height:
-        #         apple_x = int(random.randrange(0, win_width - apple_width)) # / apple_width) * apple_width
-        #         apple_y = int(random.randrange(0, win_height - apple_height)) # / apple_height) * apple_height
-        #         snake_score += 2
-        #This code perfects the crossover / collision ( right side fixed) and apple function fixed
-        #V 3.0
+        
         if lead_x > apple_x and lead_x < apple_x + apple_width or lead_x + snake_width > apple_x and lead_x + snake_width < apple_x+apple_width:
             if lead_y > apple_y and lead_y < apple_y + apple_height or lead_y + snake_length > apple_y and lead_y < apple_y + apple_height:
                 apple_x, apple_y = draw_apple()
                 snake_score += 2
                 real_score += 1
-
+        
+        
+        # To increase difficulty
         if real_score > 9:
             fps = 21
         elif real_score > 19:
