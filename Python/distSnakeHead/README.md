@@ -1,4 +1,4 @@
-ALL images were drawn from scratch by me
+snakehead and apple images were drawn from scratch by me
 
 If you want to convert the game into an executable, then please run the setup.py.
 
