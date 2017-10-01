@@ -286,9 +286,9 @@ class Board:
         for x in range(self.x):
             for y in range(self.y):
                 if boarddict[(x,y)] == self.alive_cell:
-                    print(self.alive_colour + boarddict[(x, y)] + bcolors.ENDC, end=' ')
+                    print(self.alive_colour + boarddict[(x, y)] + bcolors.ENDC, end=' ')  # Print the colour with codes
                 else:
-                    print(self.dead_colour + boarddict[(x, y)] + bcolors.ENDC, end=' ')
+                    print(self.dead_colour + boarddict[(x, y)] + bcolors.ENDC, end=' ')  # Print the colour with codes
             print()
         print()
 
