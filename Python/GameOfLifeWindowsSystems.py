@@ -24,7 +24,7 @@ import os  # For terminal only
 # COMPLETED
 # @name         Conway's Game Of Life Windows -- Aditya
 # @namespace    /Python/GameOfLifeWindowsSystems.py
-# @version      1.0.17654
+# @version      1.0.17655
 # @description  My own take into Conway's Game of life... It isn't the same as cells aren't deleted/born simultaneously
 # @author       Aditya Putravu
 
