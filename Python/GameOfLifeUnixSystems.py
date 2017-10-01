@@ -23,7 +23,7 @@ import os  # For terminal only
 
 # COMPLETED
 # @name         Conway's Game Of Life Unix -- Aditya
-# @namespace    /Python/AGoAtConwaysGOL.py
+# @namespace    /Python/GameOfLifeUnixSystems.py
 # @version      1.0.17654
 # @description  My own take into Conway's Game of life... It isn't the same as cells aren't deleted/born simultaneously
 # @author       Aditya Putravu
