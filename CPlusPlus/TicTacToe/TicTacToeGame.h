@@ -27,7 +27,7 @@ private:
     //gets x and y cord
     int getXCord();
     int getYCord();
-    //palces cehcker and check validity pos
+    //places checker and check validity of pos
     bool placeMarker(int x, int y, string currentPlayer);
     //checks victory
     bool checkVictory(string currentPlayer);
