@@ -48,7 +48,7 @@ def train_neural_network(X):
 
     # Want to minimise cost
     #                                                 , learningrate = 0.001
-    optimiser = tf.train.AdamOptimizer().minimize(cost )  # lel
+    optimiser = tf.train.AdamOptimizer().minimize(cost ) 
 
     # Cycles of feedforward and backprops
     howmany_epochs = 10
