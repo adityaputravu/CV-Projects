@@ -6,47 +6,8 @@ from keras import backend as K
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-mnist = input_data.read_data_sets("/Users/aditya/Desktop/Pycharm/MachineLearning/SentDex/NeuralNetwork", one_hot=True)
-
-# 10 classes, 0-9 handwritten
-'''
-Output as 
-0 = [1,0,0,0,0,0,0,0,0,0]
-1 = [0,1,0,0,0,0,0,0,0,0]
-2 = [0,0,1,0,0,0,0,0,0,0]
-and so on
-'''
-
-n_nodes_hl1 = 500
-n_nodes_hl2 = 500
-n_nodes_hl3 = 500
-
-n_classes = 10
-batch_size = 100  # Batches of 100 imgs at a time
-
-
-# Height x Width ---> vector squashed to one line (0,1,0....)
-x = tf.placeholder('float', [None, 784])
-y = tf.placeholder('float')
-
-
 def neural_network_model(data):
-    # (input_data * weights) + biases
-    # 1: K.variable -> Random values -> shape
-    # hidden_1_layer = {'weights': K.variable(tf.random_normal([784, n_nodes_hl1])),
-    #                   'biases': K.variable(tf.random_normal([n_nodes_hl1]))}
-    #
-    # hidden_2_layer = {'weights': K.variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2])),
-    #                   'biases': K.variable(tf.random_normal([n_nodes_hl2]))}
-    #
-    # hidden_3_layer = {'weights': K.variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3])),
-    #                   'biases': K.variable(tf.random_normal([n_nodes_hl3 ]))}
-    #
-    # output_layer = {'weights': K.variable(tf.random_normal([n_nodes_hl3, n_classes])),
-    #                   'biases': K.variable(tf.random_normal([n_classes]))}
-
-
-    # Produces better accuracy
+    
     # Smaller initial values making training smoother
     hidden_1_layer = {'weights': K.variable(K.truncated_normal([784, n_nodes_hl1], stddev=0.1)),
                       'biases': K.variable(K.constant(0.1, shape=[n_nodes_hl1]))}
@@ -59,9 +20,7 @@ def neural_network_model(data):
 
     output_layer = {'weights': K.variable(K.truncated_normal([n_nodes_hl3, n_classes], stddev=0.1)),
                       'biases': K.variable(K.constant(0.1, shape=[n_classes]))}
-
-
-    # (input_data * weights) + biases
+    
     # Matmul is matrix multiplication
 
     l1 = tf.add(K.dot(data, hidden_1_layer['weights']) , hidden_1_layer['biases'])
@@ -121,16 +80,6 @@ def train_neural_network(X):
             # To know how much longer to wait
             print("Epoch:", epoch+1, "completed out of", howmany_epochs, "Loss:", epoch_loss)
 
-            # correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
-            #
-            # accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
-            # acc_eval = accuracy.eval({x:mnist.test.images, y:mnist.test.labels})
-            # # Evaluate all accuracies test images to labels
-            # print('Accuracy:', acc_eval)
-
-
-
-
         # tf.argmax returns index of max value and hoping these are identical
         correct = K.equal(K.argmax(prediction, 1), K.argmax(y, 1))
 
@@ -138,5 +87,32 @@ def train_neural_network(X):
         # Evaluate all accuracies test images to labels
         print('Accuracy:', accuracy.eval({x:mnist.test.images, y:mnist.test.labels}))
 
+if __name__ == '__main__': 
+    
+    # Set this as the folder you are working in if you want
+    folder = os.path.dirname(__name__)
 
-train_neural_network(x)
+    mnist = input_data.read_data_sets(folder, one_hot=True)
+
+    # 10 classes, 0-9 handwritten
+    '''
+    Output as 
+    0 = [1,0,0,0,0,0,0,0,0,0]
+    1 = [0,1,0,0,0,0,0,0,0,0]
+    2 = [0,0,1,0,0,0,0,0,0,0]
+    and so on
+    '''
+
+    n_nodes_hl1 = 500
+    n_nodes_hl2 = 500
+    n_nodes_hl3 = 500
+
+    n_classes = 10
+    batch_size = 100  # Batches of 100 imgs at a time
+
+
+    # Height x Width ---> vector squashed to one line (0,1,0....)
+    x = tf.placeholder('float', [None, 784])
+    y = tf.placeholder('float')
+
+    train_neural_network(x)
