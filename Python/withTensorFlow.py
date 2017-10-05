@@ -6,7 +6,7 @@ from keras import backend as K
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-def neural_network_model(data):
+def neural_network_model(data): 
     
     # Smaller initial values making training smoother
     hidden_1_layer = {'weights': K.variable(K.truncated_normal([784, n_nodes_hl1], stddev=0.1)),
