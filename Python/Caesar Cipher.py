@@ -9,8 +9,9 @@ class Caesar:
         for i in text:
 
             if i in self.alphabet:
-                #  Caesar cipher ting
-                a.append(self.alphabet[self.alphabet.index(self.alphabet[(self.alphabet.index(i) + 1 + self.n - 1) % 26])])
+                #  En = (x + n) % 26
+                #  Caesar cipher 
+                a.append(self.alphabet[self.alphabet.index(self.alphabet[(self.alphabet.index(i)+1 +self.n -1) % 26])])
             else:
                 a.append(i)
 
@@ -22,8 +23,9 @@ class Caesar:
 
         for i in text:
             if i in self.alphabet:
-                #  Caesar cipher ting
-                b.append(self.alphabet[self.alphabet.index(self.alphabet[(self.alphabet.index(i) + 1 - self.n - 1) % 26])])
+                #  Dn = (x - n) % 26
+                #  Caesar cipher algorithm 
+                b.append(self.alphabet[self.alphabet.index(self.alphabet[(self.alphabet.index(i)+1 -self.n -1) % 26])])
             else:
                 b.append(i)
 
