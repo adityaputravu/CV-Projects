@@ -1,5 +1,6 @@
 import random
 
+
 # Check Greatest Common Denominator
 def gcd(a, b):
     while b != 0:
@@ -32,9 +33,9 @@ class Affine:
         # Never changing
         self.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.n = len(self.alphabet)
+        # Incase keys are wanted to be submitted manually for encryption
         if keys:
             self.create_keys()
-
 
     def create_keys(self):
         # Creating options
@@ -59,7 +60,7 @@ class Affine:
 
     def decrypt(self, aprime, b, message, brute=False):
         message = message.upper()
-        if not brute:
+        if not brute == True:
             decrypted = []
             for letter in message:
                 if letter in self.alphabet:
@@ -70,7 +71,7 @@ class Affine:
                     decrypted.append(letter)
             return ''.join(decrypted)
 
-        else:
+        elif brute == True:
             for a2 in self.A:
                 for b2 in self.B:
                     decrypted = []
@@ -83,13 +84,44 @@ class Affine:
                             decrypted.append(letter)
                     print("A:%s B:%s\n%s\n" % (a2, b2, ''.join(decrypted)))
 
+    def plain_text(self, p1, p2, d1, d2):
+        # RETURNS THE A AND B VALUE -- DECRYPT SEPERATELY
+        # P1 and P2 are encrypted
+        # D1 and D2 are the decrypted versions
+        p1 = p1.upper()
+        p2 = p2.upper()
+        d1 = d1.upper()
+        d2 = d2.upper()
+        p1 = self.alphabet.index(p1)  # y1
+        p2 = self.alphabet.index(p2)  # y2
+        d1 = self.alphabet.index(d1)  # x1
+        d2 = self.alphabet.index(d2)  # x2
+        # y1 = A*x1 + B
+        # y2 = A*x2 + B
+        # y1-y2 = (Ax1)-(Ax2)
+        p3 = p1-p2
+        p3 = p3 % self.n  # As negatives or over the mod ruin everything
+        d3 = d1-d2
+        d3 = d3 % self.n  # As negatives or over the mod ruin everything
+
+        # Subtracted value
+        # A = (y1-y2) / (x1-x2)
+        # A = (y1-y2) * (x1-x2)^-1
+        # A = p3 * modularInverse(d3) % 26
+        A = (p3 * modinv(d3)) % 26  # Finds A value
+        # y1 = A1*x1 + B
+        # B = y1 - A*x1
+        B = p1 - (A*d1) % 26
+
+        # y = A*x + B
+        return A, B
 
 if __name__ == "__main__":
 
     while True:
         cipher = Affine()
         try:
-            type = input("What would you like to do:\n<1> Encrypt\n<2> Decrypt\n")
+            type = input("What would you like to do:\n<1> Encrypt\n<2> Decrypt\n<3> Plain Text Attack\n")
 
             if type == '1':
                 msg = input("What would you like to encrypt?\nTIP: Punctuation will not be changed\n")
@@ -121,6 +153,17 @@ if __name__ == "__main__":
                     msg = input("What would you like to decrypt?\nTIP: Punctuation will not be changed\n")
                     cipher.decrypt(1,1,msg,brute=True)
 
+            elif type == '3':
+                e1 = input("Letter which is encrypted: ")
+                d1 = input("The decrypted version: ")
+                e2 = input("2nd letter which is encrypted: ")
+                d2 = input("The decrypted version: ")
+
+                msg = input("What was the encrypted message?\nTIP: Punctuation will not be changed\n")
+
+                A, B = cipher.plain_text(e1, e2, d1, d2)
+                decrypted = cipher.decrypt(modinv(A), B, msg)
+                print(decrypted)
 
         except Exception as e:
             print("Oops! Something went wrong... Re-Running\n\n")
