@@ -452,7 +452,7 @@ int main(int argc, char *argv[]){
 	int result = extend(list, list2, 1);
 	printf("RESULT: %d\n", result);
 
-	//push_to_pos(list, 1, 69);
+	push_to_pos(list, 1, 69);
 	print_list(list, 1, 0, 0, 0);	
 	
 	printf("Size: %d\n", get_length(list));
