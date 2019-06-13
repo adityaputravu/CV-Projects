@@ -9,6 +9,24 @@ typedef struct node{
 	int data;
 }s_node;
 
+// Forward Declarations
+int append(s_node* list, int value);
+int extend(s_node* dest, s_node* src, int pos);
+void free_list(s_node* list);
+int get_index(s_node* list, s_node item);
+int get_length(s_node* list);
+s_node* get_node(s_node* list, int index);
+s_node* make_list(long size, int init_val);
+void pop(s_node** list);
+void print_list(s_node* list, bool do_data, bool do_count, bool do_next, bool do_prev);
+int push(s_node** list, int value);
+int push_to_pos(s_node* list, int pos, int value);
+int remove_by_index(s_node* list, int index);
+int remove_by_node(s_node* list, s_node item);
+int remove_by_value(s_node* list, int value);
+void remove_last(s_node* list);
+void reverse_list(s_node** list);
+
 s_node* make_list(long size, int init_val){
 	/*
 	 * Makes a list
@@ -84,6 +102,50 @@ int append(s_node* list, int value){
 	return 0;
 }
 
+int extend(s_node* dest, s_node* src, int pos){
+	/*
+	 * Dest is result list which is bigger
+	 * Src is list to append to end
+	 *
+	 * set pos to -1 to do extend at end of
+	 * list
+	 *
+	 * Inserts after
+	 */
+	int size = get_length(dest) - 1;
+	if(-1 > pos || pos > size)
+		return -1;	
+	int count = 0;
+	s_node* current = dest;
+	while(current->next){
+		if(count == pos)
+			break;
+		current = current->next;
+		++count;
+	}
+	
+	if (pos != -1){	
+		s_node* src_end = src;
+		while(src_end->next){
+			src_end = src_end->next;
+		}
+		//swap
+		
+		if(current->next){
+			src_end->next = current->next;
+			(current->next)->prev = src_end;
+		}
+		current->next = src; 
+		src->prev = current;
+		
+	}
+	else{
+		current->next = src;
+	}
+	return 0;
+}
+
+
 int push(s_node** list, int value){
 	/*
 	 * Heap allocates a new node
@@ -104,6 +166,41 @@ int push(s_node** list, int value){
 	(*list)->prev = new;
 
 	*list = new;	
+	return 0;
+}
+
+int push_to_pos(s_node* list, int pos, int value){
+	/*
+	 * Add value to pos
+	 * Inserts after 
+	 */
+	
+	int size = get_length(list) - 1;
+	if(0>pos || pos>size)
+		return -1;	
+	
+	s_node* current = list;
+	int count = 0;
+	do{
+		if(count == pos)
+			break;	
+		current = current->next;
+		++count;
+	}while(current);
+	
+	s_node* new_node = malloc(sizeof(s_node));
+	if(!new_node)
+		return -1;
+	new_node->data = value;
+	
+	//swap
+	if(pos != size){
+		(current->next)->prev = new_node;
+		new_node->next = current->next;
+	}
+	current->next  = new_node;
+	new_node->prev = current;
+
 	return 0;
 }
 
@@ -280,6 +377,42 @@ int get_index(s_node* list, s_node item){
 	return -1;
 }
 
+void reverse_list(s_node** list){
+	/*
+	 * Swaps ->next and ->prev
+	 * the temp variable ends 
+	 * up being list[1] so 
+	 * ->prev = list[0] and thus 
+	 * list is reversed
+	 */
+	s_node* temp = NULL; 
+	s_node* current = *list;
+	do{	
+		// Literally no idea why it works 
+		// when you assign prev first
+		
+		// Swap links	
+		temp 	      = current->prev;
+		current->prev = current->next;
+		current->next = temp;
+		
+		current = current->prev;
+	}while(current);
+	
+	// temp is terminator's next
+	if(temp)
+		*list = temp->prev;
+}
+
+int get_length(s_node* list){
+	s_node* current = list;
+	int count = 0;
+	while(current = current->next)
+		++count;
+	return count+1;
+}
+
+
 void print_list(s_node* list, bool do_data, bool do_count, bool do_next, bool do_prev){
 	/*
 	 * Output and format
@@ -304,11 +437,25 @@ void print_list(s_node* list, bool do_data, bool do_count, bool do_next, bool do
 
 int main(int argc, char *argv[]){
  	// TO ADD: 
-	// Append_list
+	// ???
 	
-	s_node* list = make_list(10, 31337);
+	s_node* list = make_list(10, 0);
 
+	// Run function with ** 
+	reverse_list(&list);
+	
+	// Set value 	
+	get_node(list, 4)->data = 4;
+
+	// Checking outputs
+	s_node* list2 = make_list(3,3);
+	int result = extend(list, list2, 1);
+	printf("RESULT: %d\n", result);
+
+	//push_to_pos(list, 1, 69);
 	print_list(list, 1, 0, 0, 0);	
+	
+	printf("Size: %d\n", get_length(list));
 	free_list(list);
 	return 0;
 }
