@@ -1,2 +1,2 @@
-# CV-Projects
-Projects for people accessing my CV
+# Random hobby projects
+Projects on topics I felt interested in
