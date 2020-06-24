@@ -233,7 +233,6 @@ class Board:
                     print()
                     # Print board
                     self.print_board(self.boarddict)
-                    print(self.boarddict)
                     #  Update the positions
                     self.boarddict = self.move(self.boarddict)
                     #  Let user see it visually
